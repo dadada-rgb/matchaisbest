@@ -1,4 +1,4 @@
-                              																																																																																																																																																																			-- This script was generated using the MoonVeil Obfuscator v1.4.5 [https://moonveil.cc]
+                              																																																																																																																																																																			-- This script was generated using the bunnyobf[v6.7]
                               
                               																																																																																																																																																																			local Wd,U,Fb,Lb,O,Da=getmetatable,bit32.bxor,pairs,type
                               																																																																																																																																																																			local Gf,p,S,Pc,nf,ue,Lc,na,kd,Hd,Xa,i_,sd,sf,M,ca,Ke,lb,ka,Ac,Be,Ic,ne,fd,_c,m;
