@@ -135,6 +135,23 @@ end
 
 ---
 
+# Shoot System
+
+```lua
+bunnyapi:ShootGun(tool, targetPart, finalPos, direction)
+```
+## Example:
+
+```lua
+local char = LocalPlayer.Character
+local tool = char and char:FindFirstChild("[LMG]")  -- Example
+
+local targetPart = lockedTarget.Character.UpperTorso
+local finalPos = predictedPosition
+local dir = (finalPos - tool.Handle.Position).Unit
+
+bunnyapi:ShootGun(tool, targetPart, finalPos, dir)
+```
 # Item System
 
 ## Check Owned Item
