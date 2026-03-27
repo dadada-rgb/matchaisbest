@@ -1,4 +1,4 @@
-# Helpbook bunny - matcha 
+# **Helpbook bunny - matcha [ author: van huy ]**
 
 
 # **Target System**
@@ -132,6 +132,72 @@ end
 ---
 
 # **Other**
+
+---
+
+# Item System
+
+## Check Owned Item
+
+Checks whether the local player currently owns a tool whose name contains the specified text.
+Searches both **Character** and **Backpack**.
+
+```lua
+local has = bunnyapi:has_item("shotgun")
+
+if has then
+    print("Player has shotgun")
+else
+    print("Player does not have shotgun")
+end
+```
+
+### Returns:
+
+* `true` – item found
+* `false` – not found
+
+---
+
+# Shop System
+
+## Find Shop Item
+
+```lua
+local shop = bunnyapi:Find_Item("lmg", false)
+if shop then
+    print("Found shop:", shop.Name)
+else
+    warn("Shop not found")
+end
+```
+
+### Parameters:
+
+* `Name` (string) – item name to find
+* `Type` (boolean or nil)
+
+  * `true` = find ammo
+  * `false` = find gun
+  * `nil` = treated as `false`
+
+### Returns:
+
+* Shop instance, or `nil`
+
+---
+
+## Buy Item
+
+quick buy item (any item like weapon,misc item)
+
+```lua
+--//buy gun
+bunnyapi:buy_item("lmg", false) -- false or "gun"
+
+--//buy ammo
+bunnyapi:buy_item("lmg", true) -- true or "ammo"
+```
 
 ---
 
