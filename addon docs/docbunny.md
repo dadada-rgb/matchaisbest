@@ -1,26 +1,22 @@
-# **Helpbook bunny - matcha [ author: van huy ]**
+# **Helpbook - matcha latte [ author: van huy ]**
 
 
 # **Target System**
 
 ## **Get Target**
 
-Retrieve the currently selected target for **main-mode targeting** or **ragebot targeting**.
+Retrieve the currently selected target
 
 ```lua
--- Get main target
-local targetMain = bunnyapi:get_target_main()
+local target = matchaapi:get_target()
 
--- Get rage target
-local targetRage = bunnyapi:get_target_rage()
-
--- Both functions return a Player instance or nil
+-- functions return a Player instance or nil
 ```
 
 ### **Example**
 
 ```lua
-local target = bunnyapi:get_target_main() -- or bunnyapi:get_target_rage()
+local target = matchaapi:get_target()
 
 if target then
     print(target.Name)
@@ -34,11 +30,7 @@ end
 ## **Set Target**
 
 ```lua
--- Set main target
-bunnyapi:set_target_main(Player)
-
--- Set rage target
-bunnyapi:set_target_rage(Player)
+matchaapi:set_target(Player)
 ```
 
 ### **Example**
@@ -46,11 +38,11 @@ bunnyapi:set_target_rage(Player)
 ```lua
 local Players = Service("Players")
 local playerName = "roblox"
-local targetPlayer = bunnyapi:Get_Player(playerName)
+local targetPlayer = matchaapi:Get_Player(playerName)
 
-bunnyapi:set_target_main(targetPlayer)
+matchaapi:set_target(targetPlayer)
 
-local current = bunnyapi:get_target_main()
+local current = matchaapi:get_target()
 print(current.Name)
 ```
 
@@ -70,63 +62,16 @@ Functions that return a **character component** if found:
 -- Target is a Player instance
 
 -- Get Humanoid
-bunnyapi:Humanoid(Player)
+matchaapi:Humanoid(Player)
 
 -- Get UpperTorso
-bunnyapi:UpperTorso(Player)
+matchaapi:UpperTorso(Player)
 
 -- Get HumanoidRootPart
-bunnyapi:HumanoidRootPart(Player)
+matchaapi:HumanoidRootPart(Player)
 
 -- Get ForceField (Instance)
-bunnyapi:ForceField(Player)
-```
-
----
-
-## **Returns boolean / BoolValue / nil**
-
-Status-related checks:
-
-```lua
--- Knocked status (BoolValue or nil)
-bunnyapi:Is_KO(Player)
-
--- Dead status (BoolValue or nil)
-bunnyapi:Is_Dead(Player)
-
--- Attacking status (BoolValue or nil)
-bunnyapi:Is_Attacking(Player)
-
--- LocalPlayer reloading (boolean)
-bunnyapi:Is_Reloading()
-
--- Same crew (boolean)
-bunnyapi:Is_Crew(Player, Target)
-```
-
----
-
-### **Example:**
-
-```lua
-local target = bunnyapi:get_target_main()
-
-if target then
-    
-    if bunnyapi:Is_KO(target) then
-        return print("Target is knocked")
-    end
-
-    if bunnyapi:Is_Crew(LocalPlayer, target) then
-        return warn("Target is in my crew")
-    end
-
-    if bunnyapi:Is_Reloading() then
-        return print("Reloading ammo...")
-    end
-
-end
+matchaapi:ForceField(Player)
 ```
 
 ---
@@ -135,23 +80,6 @@ end
 
 ---
 
-# Shoot System
-
-```lua
-bunnyapi:ShootGun(tool, targetPart, finalPos, direction)
-```
-## Example:
-
-```lua
-local char = LocalPlayer.Character
-local tool = char and char:FindFirstChild("[LMG]")  -- Example
-
-local targetPart = lockedTarget.Character.UpperTorso
-local finalPos = predictedPosition
-local dir = (finalPos - tool.Handle.Position).Unit
-
-bunnyapi:ShootGun(tool, targetPart, finalPos, dir)
-```
 # Item System
 
 ## Check Owned Item
@@ -160,7 +88,7 @@ Checks whether the local player currently owns a tool whose name contains the sp
 Searches both **Character** and **Backpack**.
 
 ```lua
-local has = bunnyapi:has_item("shotgun")
+local has = matchaapi:has_item("shotgun")
 
 if has then
     print("Player has shotgun")
@@ -176,79 +104,6 @@ end
 
 ---
 
-# Shop System
-
-## Find Shop Item
-
-```lua
-local shop = bunnyapi:Find_Item("lmg", false)
-if shop then
-    print("Found shop:", shop.Name)
-else
-    warn("Shop not found")
-end
-```
-
-### Parameters:
-
-* `Name` (string) – item name to find
-* `Type` (boolean or nil)
-
-  * `true` = find ammo
-  * `false` = find gun
-  * `nil` = treated as `false`
-
-### Returns:
-
-* Shop instance, or `nil`
-
----
-
-## Buy Item
-
-quick buy item (any item like weapon,misc item)
-
-```lua
---//buy gun
-bunnyapi:buy_item("lmg", false) -- false or "gun"
-
---//buy ammo
-bunnyapi:buy_item("lmg", true) -- true or "ammo"
-```
-
----
-
-# Tool Cache
-
-Fetch information about the tool currently equipped by the local player.
-
-```lua
-local data = bunnyapi:Cache_Tool()
-
-if data then
-    print("Equipped:", data.Instance.Name)
-    print("Ammo:", data.Ammo, "/", data.MaxAmmo)
-else
-    warn("No tool equipped")
-end
-```
-
-### Returns (table or nil)
-
-| Field     | Type     | Description                   |
-| --------- | -------- | ----------------------------- |
-| Instance  | Tool     | The equipped tool             |
-| Handle    | BasePart | The tool’s handle             |
-| Offset    | Vector3  | Offset calculated from handle |
-| Ammo      | number   | Current ammo count            |
-| MaxAmmo   | number   | Maximum possible ammo         |
-| Gun       | boolean  | True if tool is a gun         |
-| Shotgun   | boolean  | True if tool is a shotgun     |
-| Automatic | boolean  | True if gun is automatic      |
-| Client    | boolean  | True if tool is not a weapon  |
-
----
-
 # Connection System
 
 ## Add Connection
@@ -260,7 +115,7 @@ local conn = RunService.Heartbeat:Connect(function()
     print("Heartbeat running")
 end)
 
-bunnyapi:AddConnection("HeartbeatLoop", conn)
+matchaapi:AddConnection("HeartbeatLoop", conn)
 ```
 
 * If the name already exists, the old connection is disconnected and replaced.
@@ -272,7 +127,7 @@ bunnyapi:AddConnection("HeartbeatLoop", conn)
 Checks if a named connection exists and is still active.
 
 ```lua
-local status = bunnyapi:Connected("HeartbeatLoop")
+local status = matchaapi:Connected("HeartbeatLoop")
 print("Status:", status)
 ```
 
@@ -286,7 +141,7 @@ Returns:
 Disconnects a stored connection by name.
 
 ```lua
-bunnyapi:Disconnect("HeartbeatLoop", true)
+matchaapi:Disconnect("HeartbeatLoop", true)
 ```
 
 Parameters:
@@ -301,7 +156,7 @@ Parameters:
 Disconnects all registered connections and clears the table.
 
 ```lua
-bunnyapi:Unload()
+matchaapi:Unload()
 print("All connections cleared.")
 ```
 
@@ -314,7 +169,7 @@ print("All connections cleared.")
 Finds a player whose Name or DisplayName starts with the provided text.
 
 ```lua
-local target = bunnyapi:Get_Player("rob")
+local target = matchaapi:Get_Player("rob")
 
 if target then
     print("Found:", target.Name)
@@ -332,7 +187,7 @@ Returns: `Player` or `nil`.
 Returns the closest player to the mouse cursor (on-screen).
 
 ```lua
-local target = bunnyapi:Get_Mouse_Player()
+local target = matchaapi:Get_Mouse_Player()
 
 if target then
     print("Mouse pointing at:", target.Name)
@@ -351,7 +206,7 @@ Creates an instance and applies provided properties.
 If another instance with the same name exists under the same parent, it is removed.
 
 ```lua
-local part = bunnyapi:Create("Part", {
+local part = matchaapi:Create("Part", {
     Name = "MyPart",
     Parent = workspace,
     Size = Vector3.new(3, 3, 3),
@@ -372,7 +227,7 @@ Returns: the created instance.
 Loads multiple assets using `game:GetObjects`, clones them, and returns them in a table.
 
 ```lua
-local assets = bunnyapi:GetAsset({
+local assets = matchaapi:GetAsset({
     Gun = 123456,
     Knife = 789012
 })
@@ -390,7 +245,7 @@ Returns:
 ## Play Animation
 
 ```lua
-bunnyapi:AnimPlay(10488912345, 1, 0, true)
+matchaapi:AnimPlay(10488912345, 1, 0, true)
 ```
 
 Parameters:
@@ -408,7 +263,7 @@ Priority is set to 4.
 ## Stop Animation
 
 ```lua
-bunnyapi:AnimStop(10488912345)
+matchaapi:AnimStop(10488912345)
 ```
 
 Stops animation with the given ID.
@@ -418,7 +273,7 @@ Stops animation with the given ID.
 ## Check Playing
 
 ```lua
-if bunnyapi:IsAnimPlaying(10488912345) then
+if matchaapi:IsAnimPlaying(10488912345) then
     print("Animation active")
 end
 ```
@@ -432,7 +287,7 @@ Returns: boolean.
 ## Play Sound
 
 ```lua
-local sound = bunnyapi:PlaySound(123456, 1)
+local sound = matchaapi:PlaySound(123456, 1)
 ```
 
 Plays a sound and destroys it when finished.
@@ -444,7 +299,7 @@ Returns: Sound instance.
 ## Stop Sound
 
 ```lua
-bunnyapi:StopSound(sound)
+matchaapi:StopSound(sound)
 ```
 
 Stops and destroys the given sound.
@@ -458,7 +313,7 @@ Stops and destroys the given sound.
 Disables collision for every BasePart in the character.
 
 ```lua
-bunnyapi:Noclip(LocalPlayer.Character)
+matchaapi:Noclip(LocalPlayer.Character)
 ```
 
 ---
@@ -468,7 +323,7 @@ bunnyapi:Noclip(LocalPlayer.Character)
 Removes all velocity from the character.
 
 ```lua
-bunnyapi:ZeroVelocity(LocalPlayer.Character)
+matchaapi:ZeroVelocity(LocalPlayer.Character)
 ```
 
 ---
@@ -478,7 +333,7 @@ bunnyapi:ZeroVelocity(LocalPlayer.Character)
 Changes the humanoid state of the local player.
 
 ```lua
-bunnyapi:ChangeState(Enum.HumanoidStateType.FallingDown)
+matchaapi:ChangeState(Enum.HumanoidStateType.FallingDown)
 ```
 
 ---
@@ -488,7 +343,7 @@ bunnyapi:ChangeState(Enum.HumanoidStateType.FallingDown)
 Moves a tool from Backpack to Character.
 
 ```lua
-bunnyapi:Equip("Knife")
+matchaapi:Equip("Knife")
 ```
 
 ---
@@ -498,7 +353,7 @@ bunnyapi:Equip("Knife")
 Deletes all accessories of a specific class.
 
 ```lua
-bunnyapi:RemoveAccessory(LocalPlayer.Character, "Accessory")
+matchaapi:RemoveAccessory(LocalPlayer.Character, "Accessory")
 ```
 
 ---
@@ -510,7 +365,7 @@ bunnyapi:RemoveAccessory(LocalPlayer.Character, "Accessory")
 Simple TweenService wrapper.
 
 ```lua
-bunnyapi:Tween(workspace.Part, 1, {
+matchaapi:Tween(workspace.Part, 1, {
     Position = Vector3.new(0, 10, 0)
 })
 ```
@@ -522,7 +377,7 @@ bunnyapi:Tween(workspace.Part, 1, {
 Sends a message to the TextChatService global channel.
 
 ```lua
-bunnyapi:Chat("Hello world")
+matchaapi:Chat("Hello world")
 ```
 
 ---
@@ -532,7 +387,7 @@ bunnyapi:Chat("Hello world")
 Loads and executes remote Lua code.
 
 ```lua
-bunnyapi:HttpGet("https://example.com/script.lua")
+matchaapi:HttpGet("https://example.com/script.lua")
 ```
 
 Returns: function result or nil.
@@ -544,9 +399,9 @@ Returns: function result or nil.
 Sends JSON data to a webhook using supported exploit HTTP functions.
 
 ```lua
-bunnyapi:SendWebhook("WEBHOOK_URL_HERE", {
+matchaapi:SendWebhook("WEBHOOK_URL_HERE", {
     content = "Hello Webhook",
-    username = "bunnyapi"
+    username = "matchaapi"
 })
 ```
 
@@ -557,78 +412,155 @@ bunnyapi:SendWebhook("WEBHOOK_URL_HERE", {
 ### Notify
 
 ```lua
-bunnyapi:notify("hi", 1)
+--// matchaapi:notify(title, text, duration, iconid, iconColor)
+
+matchaapi:notify("Matcha Latte", "welcome back to matcha", 5, "111495166232015", Color3.fromRGB(52, 255, 164))
 ```
 
 Parameters:
 
+* `title` (string)
 * `text` (string)
 * `duration` (number, optional)
-
+* `iconid` (number)
+* `iconColor` (rgb color)
 ---
 
 ## UI
 
-### Add New Tab
+### Add New Page
 
 ```lua
-local tab = bunnyapi:AddTab("vanhuy no1")
+--// matchaapi:AddPage(name, icon, columns, subpages)
+
+local NewPage = matchaapi:AddPage("combat", "111495166232015", 1, true)
+
 ```
+Parameters:
+
+* `name` (string)
+* `icon` (number)
+* `columns` (number, 2 or 1)
+* `subpages` (true or false)
+---
 
 ## Example
 
 ```lua
-repeat wait() until bunnyapi
+repeat wait() until matchaapi
 
-local tab = bunnyapi:AddTab("Title")
-local Plugin = tab:AddLeftGroupbox("Example")
+local NewPage = matchaapi:AddPage("combat", "111495166232015", 1, true)
+local VisualsPage = matchaapi:AddPage("Visual", "115907015044719", 2, false)
 
-Plugin:AddToggle("Toggle 1", {
-    Text = "Toggle 1",
-    Default = false,
-    Callback = function(v)
-        print("Toggle:", v)
-    end
+Aimbot = NewPage:SubPage({
+	Name = "aimbot", 
+	Icon = "111386589037485", 
+	Columns = 2
 })
-Plugin:AddSlider("MySlider", {
-	Text = "This is my slider!",
-	Default = 0,
-	Min = 0,
-	Max = 5,
-	Rounding = 1,
-	Compact = false,
+local GeneralSection = Aimbot:Section({Name = "general2", Icon = "103174889897193", Side = 1})
+
+local Toggle = GeneralSection:Toggle({
+	Name = "enabled",
+	Flag = "enabled",
+	Default = false,
 	Callback = function(Value)
-		print("[cb] MySlider was changed! New value:", Value)
-	end,
-	Tooltip = "I am a slider!", -- Information shown when you hover over the slider
+		print(Value)
+	end
 })
---double slider
-Plugin:AddSlider("MySlider1", {
-	Text = "1",
-	Default = 0,
-	Min = 0,
-	Max = 5,
-	Rounding = 1,
-	Compact = false,
-}):AddSlider("MySlider2", {
-	Text = "2",
-	Default = 0,
-	Min = 0,
-	Max = 5,
-	Rounding = 1,
-	Compact = false,
+--[[GeneralSection:Label("Exotic Dealer", "Left"):Colorpicker({
+	Name = "Colorpicker",
+	Flag = "Colorpicker23",
+	Default = Color3.fromRGB(0, 0, 0),
+	Alpha = 0,
+	Callback = function(Color, Alpha)
+		print(Color, Alpha)
+	end
+})]]
+local Button = GeneralSection:Button({
+	Name = "Button", 
+	Callback = function()
+		print("Pressed")
+	end
 })
-Plugin:AddButton("Print Target", function()
-    print(bunnyapi:bunnyapi:get_target_main())
-end)
+local Slider = GeneralSection:Slider({
+	Name = "Slider", 
+	Flag = "Slider", 
+	Min = 0, 
+	Default = 0, 
+	Max = 100, 
+	Suffix = "%", 
+	Decimals = 1, 
+	Callback = function(Value)
+		print(Value)
+	end
+})
+GeneralSection:Label("hi bro", "Left")
 
-Plugin:AddButton("Check Reload", function()
-    print("Reloading:", bunnyapi:Is_Reloading())
-end)
+local Dropdown = GeneralSection:Dropdown({
+	Name = "Dropdown",
+	Flag = "Dropdown",
+	Items = { },
+	Default = "One",
+	MaxSize = 155,
+	Multi = false,
+	Callback = function(Value)
+		print(Value)
+	end
+})
+Dropdown:AddOption("Black")
+Dropdown:AddOption("Black")
+Dropdown:AddOption("Black")
 
-Plugin:AddButton("Notify", function()
-    bunnyapi:notify("hi", 5)
-end)
---//other thing like dropdown etc based on linoria example
---https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/refs/heads/main/Example.lua
+local MultiDropdown = GeneralSection:Dropdown({
+	Name = "Multi Dropdown",
+	Flag = "MultiDropdown",
+	Items = {"One", "Two", "Three"},
+	Default = {"One", "Two"},
+	MaxSize = 85,
+	Multi = true,
+	Callback = function(Value)
+		print(Value)
+	end
+})
+
+local Label = GeneralSection:Label("Keybind", "Left")
+Label:Keybind({
+	Name = "Keybind",
+	Flag = "Keybind",
+	Default = Enum.KeyCode.L,
+	Mode = "toggle",
+	Callback = function(Value)
+		print(Value)
+	end
+})
+
+local Toggle2 = GeneralSection:Toggle({
+	Name = "enabled2",
+	Flag = "enabled2",
+	Default = false,
+	Callback = function(Value)
+		print(Value)
+	end
+}):Keybind({
+	Name = "Keybind2",
+	Flag = "Keybind2",
+	Default = Enum.KeyCode.RightAlt,
+	Mode = "toggle",
+	Callback = function(Value)
+		print(Value)
+	end
+})
+
+local Textbox = GeneralSection:Textbox({
+	Name = "Textbox",
+	Flag = "Textbox",
+	Placeholder = "Placeholder",
+	Default = "Text",
+	Callback = function(Value)
+		print(Value)
+	end
+})
+local Esp = VisualsPage:Section({Name = "esp", Icon = "103174889897193", Side = 1})
+local World = VisualsPage:Section({Name = "world", Icon = "135799335731002", Side = 2})
+
 ```
